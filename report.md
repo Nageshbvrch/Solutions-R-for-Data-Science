@@ -6,8 +6,8 @@ CS 625, Fall 2020
 
 ### Goal:
 
-To find solutions to all the exercise questions in the book “R for Data
-Science”.
+To find solutions to all the exercise questions in the book “**R for
+Data Science**”.
 
 ## Report:
 
@@ -38,9 +38,9 @@ important packages are:
 
 [R for Data Science](https://r4ds.had.co.nz/data-visualisation.html)
 
-### 3 Data visualisation:
+### Chapter-3:(Data visualisation)
 
-#### 3.2.1 The mpg data frame
+#### 3.2.1 The `mpg` data frame
 
 ``` r
 mpg
@@ -101,18 +101,28 @@ ggplot(data = mpg) +
 
 #### Solutions 3.2.4
 
-**1. Run ggplot(data = mpg). What do you see?**
+**1. Run `ggplot(data = mpg)`. What do you see?**
 
 ``` r
 ggplot(data = mpg)
 ```
 
 ![](report_files/figure-gfm/unnamed-chunk-4-1.png)<!-- --> Just by
-running `ggplot(data = mpg)` we could not see any output but only a
-plot. However, the `ggplot(data = mpg)` must be added with the `geom`
-functions.
+running `ggplot(data = mpg)` we could not see any output, except a plot.
+Because, `ggplot()` is not instructed what to plot. It means we should
+define a plot between two `variables` (attributes in the columns). So,
+the `ggplot(data = mpg)` must be added with the `geom` functions.
 
 **2. How many rows are in `mpg`? How many columns?**
+
+There are multiple ways to find the number fo rows and columns in the
+data frame.
+
+  - Just by giving the data (say `mpg`) we can find the number of rows
+    and columns, but this will run the whole data frame as well. That
+    means a lot of bites and space.
+
+<!-- end list -->
 
 ``` r
 mpg
@@ -133,12 +143,12 @@ mpg
     ## 10 audi         a4 quat~   2    2008     4 manual~ 4        20    28 p     comp~
     ## # ... with 224 more rows
 
-By running `mpg` we can find the number of rows and columns.
-
 It is observed that there are 234 rows and 11 columns.
 
-To find the the number of rows and columns with out displaying the data,
-we can use `nrow()` and `ncol()`.
+  - The best way to find the the number of `rows` and `columns` with out
+    displaying the data frame is to use commands `nrow()` and `ncol()`.
+
+<!-- end list -->
 
 ``` r
 # Number of rows in `mpg`
@@ -154,8 +164,16 @@ ncol(mpg)
 
     ## [1] 11
 
-The `glimpse()` function also displays the number of rows and columns in
-a data frame
+This will display the number of rows and columns.
+
+1 Rows: 234
+
+2 Columns: 11
+
+  - The alternate way is `glimpse()` function which can also display the
+    number of rows and columns in a data frame
+
+<!-- end list -->
 
 ``` r
 glimpse(mpg)
@@ -175,6 +193,15 @@ glimpse(mpg)
     ## $ fl           <chr> "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p",...
     ## $ class        <chr> "compact", "compact", "compact", "compact", "compact",...
 
+This function `glimpse()` is good to find all the columns in a row and
+the attribute types can be easily identified.
+
+In the above output it can be observed that out of the 11 columns 6
+attributes are categorical and 5 of them are quantitative.
+
+Assume a data frame with 20, 40, or more number of columns all the
+attribute types can be identified.
+
 **3. What does the `drv` variable describe? Read the help for `?mpg` to
 find out.**
 
@@ -191,6 +218,16 @@ find out.**
 | “r”   | rear-wheel drive         |
 | “4”   | 4wd                      |
 
+Most of the times we see a data attributes with short words or
+abbreviations and we may also see some short form of categorical
+information in the columns.
+
+By running `?data` say `?mpg` the information about the data can be
+identified.
+
+I believe the predefined packages in *ggplot* has the description about
+the data.
+
 **4. Make a scatterplot of `hwy` vs `cyl`**.
 
 ``` r
@@ -200,6 +237,41 @@ ggplot(data = mpg) +
 
 ![](report_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
+A scatterplot is a point mapping between two quantitative variables.
+
+It is very important to ask a question in how to establish a relation,
+in general we tend to establish relation between one quantitative
+attribute varies with respect to the other.
+
+For example, as x changes there could be a change in y. So, x is placed
+on x-axis and y is placed on y-axis.
+
+In the above question the task is to establish a relation between `hwy`
+and `cyl`. So, let us understand the attributes:
+
+hwy \(-->\) highway miles per gallon
+
+cyl \(-->\) number of cylinders
+
+Might the two given attributes may or may not be correlated, however we
+can make a question and clarify that as the number of cylinders changes
+in the cars, the miles per gallon could vary but by increasing the miles
+per gallon we can not chane the number of cylinders in the car.
+
+So, on the x-axis we need `cyl` and on the y-axis we can place `hwy`.
+
+Lets run the code by changing the attributes.
+
+``` r
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(y = hwy, x = cyl))
+```
+
+![](report_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
+However, it is evident that there is no relation between `cyl` and
+`hwy`.
+
 **5. What happens if you make a scatterplot of `class` vs `drv`? Why is
 the plot not useful?**
 
@@ -208,12 +280,14 @@ ggplot(data = mpg) +
   geom_point(mapping = aes(x = class, y = drv))
 ```
 
-![](report_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](report_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 Scatterplot can basically establish relation between two quantitative
 variables to find the trend and relation between the variables. In this
 case `class` and `drv` are both categorical variables. So, the plot is
 not useful.
+
+This can be more clearly observed from the concepts in other chapters.
 
 ``` r
 count(mpg, drv, class)
@@ -240,7 +314,7 @@ ggplot(mpg, aes(x = class, y = drv, color = class)) +
     geom_count()
 ```
 
-![](report_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](report_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 ### 3.3 Aesthetic mappings
 
@@ -252,7 +326,7 @@ ggplot(data = mpg) +
   geom_point(mapping = aes(x = displ, y = hwy, color = class))
 ```
 
-![](report_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](report_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 ``` r
 ggplot(data = mpg) + 
@@ -261,96 +335,11 @@ ggplot(data = mpg) +
 
     ## Warning: Using size for a discrete variable is not advised.
 
-![](report_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](report_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 ``` r
 #> Warning: Using size for a discrete variable is not advised.
 ```
-
-**Line Graph for COVID-19:**
-
-    COVID <- read.csv("./HW7_datasets/COVID-19.csv")
-    #head(COVID)
-    COVID$date<-mdy(COVID$date)
-    COVID19 <- select(COVID, date, cases)
-    COVID19 <- rename(COVID19, Date = date)
-    # #head(COVID19)
-    COVID19<- mutate(COVID19, Percentage = cases/sum(cases))
-    head(COVID19)
-    ggplot(data = COVID19, mapping = aes(x = Date, y = Percentage)) +
-      geom_line(size=1.5, color="red")+
-      geom_point(size=0.5, color="blue")+labs(x="Jan-2020 to Nov-2020", y ="Number of cases" , title = "COVID-19 cases from Jan-2020 through Nov-2020")
-
-**Line Graph for Gold Stock:**
-
-\`\`\`{, echo=FALSE} Gold\<-read.csv(“./HW7\_datasets/gold\_yahoo.csv”)
-\#head(Gold)
-
-Gold\(Date<-as.Date(Gold\)Date)
-
-Gold \<- select(Gold, Date, Open) Gold \<- rename(Gold, Price = Open)
-\#head(Gold) Gold\<- mutate(Gold, Percentage = Price\*100/sum(Price))
-Gold = filter(Gold, Date \> as.Date(“2019-11-01”,“%Y-%m-%d”))
-\#head(Gold)
-
-ggplot(data = Gold, mapping = aes(x = Date, y = Price)) +
-
-geom\_point(size=1.5, color=“blue”) + geom\_line(size = 0.5, color =
-“green”)+theme(axis.text.x = element\_text(angle=45, hjust =
-1))+labs(x=“Jan-2019 to Nov-2020”, y =“Stock price in dollars” , title =
-“Gold stock price from Jan-2019 through Nov-2020”)
-
-```` 
-
-**Line Graph for Gas Prices:**
-
-
-
-```{, echo= FALSE}
-Gas<-read.csv("./HW7_datasets/gas_monthly_csv.csv")
-#head(Gas)
-Gas$Date = as.Date(paste(Gas$Month,"-01",sep=""))
-Gas = filter(Gas, Date > as.Date("2019-11-01","%Y-%m-%d"))
-#head(Gas)
-Gas <- select(Gas, Date, Price)
-#Gold <- rename(Gold, Price = Open)
-#head(Gas)
-Gas<- mutate(Gas, Percentage = Price*100/sum(Price))
-#head(Gas)
-
-ggplot(data = Gas, mapping = aes(x = Date, y = Price)) +
-
-  geom_line(size=1, color="purple")+
-  geom_point(size=1.5, color="blue")+theme(axis.text.x = element_text(angle=45, hjust = 1))+labs(x="Jan-2019 to Nov-2020", y ="Gas price in dollars" , title = "Gas price from Jan-2019 through Nov-2020")
-````
-
-**Line Graph for SP500:**
-
-\`\`\`{, echo= FALSE}
-SP500\<-read.csv(“./HW7\_datasets/S\&P500\_yahoo.csv”) \#head(SP500)
-SP500\(Date = as.Date(SP500\)Date) \#head(SP500) SP500 \<- select(SP500,
-Date, Open) SP500 \<- rename(SP500, Price = Open) \#head(SP500) SP500\<-
-mutate(SP500, Percentage = Price\*100/sum(Price)) \#head(SP500) SP500 =
-filter(SP500, Date \> as.Date(“2019-11-01”,“%Y-%m-%d”)) \#head(SP500)
-ggplot(data = SP500, mapping = aes(x = Date, y = Price)) +
-
-geom\_line(size=1, color=“orange”)+ geom\_point(size=1.5, color=“blue”)+
-
-theme(axis.text.x = element\_text(angle=45, hjust = 1))+labs(x=“Jan-2019
-to Nov-2020”, y =“Stock price in dollars” , title = “S\&P500 stock price
-from Jan-2019 through Nov-2020”)
-
-\`\`\`
-
-**Procedures and Design Decisions**
-
-| Idiom:         | Smallmultiple line graphs                          |
-| -------------- | -------------------------------------------------- |
-| X-Axis:        | Jan-2020 to Nov-2020 (first letters of each month) |
-| Y-Axis(left):  | COVID (Number of cases)                            |
-| Y-Axis(Right): | Comparison Attributes (Unemployment, Gas, Stocks)  |
-
-### Explanation:
 
 ### References:
 
