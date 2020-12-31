@@ -316,7 +316,7 @@ ggplot(mpg, aes(x = class, y = drv, color = class)) +
 
 ![](report_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
-### 3.3 Aesthetic mappings
+## 3.3 Aesthetic mappings
 
 Color is a good idea to distinguish the categorical types within the
 values.
@@ -339,7 +339,288 @@ ggplot(data = mpg) +
 
 ``` r
 #> Warning: Using size for a discrete variable is not advised.
+
+# Left
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, alpha = class))
 ```
+
+    ## Warning: Using alpha for a discrete variable is not advised.
+
+![](report_files/figure-gfm/unnamed-chunk-15-2.png)<!-- -->
+
+``` r
+# Right
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, shape = class, color = class))
+```
+
+    ## Warning: The shape palette can deal with a maximum of 6 discrete values because
+    ## more than 6 becomes difficult to discriminate; you have 7. Consider
+    ## specifying shapes manually if you must have them.
+
+    ## Warning: Removed 62 rows containing missing values (geom_point).
+
+![](report_files/figure-gfm/unnamed-chunk-15-3.png)<!-- -->
+
+``` r
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), color = "blue")
+```
+
+![](report_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+
+### Exercise 3.3.1
+
+`What’s gone wrong with this code? Why are the points not blue?`
+
+``` r
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = "blue"))
+```
+
+![](report_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+
+``` r
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = class))
+```
+
+![](report_files/figure-gfm/unnamed-chunk-17-2.png)<!-- -->
+
+``` r
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), color = "blue")
+```
+
+![](report_files/figure-gfm/unnamed-chunk-17-3.png)<!-- -->
+
+We know that an aesthetic is a visual property of the objects in your
+plot. Aesthetics include things like the size, the shape, or the color
+of your points.
+
+  - In the first case even the color = “blue” is give we could see the
+    color as red but not blue. Because the the aesthetic is assigned to
+    the variables(attribute type).
+    
+    The argument `colour = "blue"` is included within the `mapping`
+    argument, and as such, it is treated as an aesthetic, which is a
+    mapping between a variable and a value. In the expression, `colour =
+    "blue"`, “`blue`” is interpreted as a categorical variable which
+    only takes a single value “`blue`”. If this is confusing, consider
+    how `colour = 1:234` and `colour = 1` are interpreted by `aes()`.
+
+`The second code still does not produces the expected result`.
+
+  - We can convey information about your data by mapping the aesthetics
+    in your plot to the variables in your dataset. For example, we can
+    map the colors of your points to the class variable to reveal the
+    class of each car.
+
+`The third code does produces the expected result`.
+
+  - We can also set the aesthetic properties of your geom manually. For
+    example, we can make all of the points in our plot blue
+
+### Exercise 3.3.2
+
+`Which variables in` `mpg` `are categorical? Which variables are
+continuous? (Hint: type` `?mpg` `to read the documentation for the
+dataset). How can you see this information when you run` `mpg?`
+
+``` r
+mpg
+```
+
+    ## # A tibble: 234 x 11
+    ##    manufacturer model    displ  year   cyl trans   drv     cty   hwy fl    class
+    ##    <chr>        <chr>    <dbl> <int> <int> <chr>   <chr> <int> <int> <chr> <chr>
+    ##  1 audi         a4         1.8  1999     4 auto(l~ f        18    29 p     comp~
+    ##  2 audi         a4         1.8  1999     4 manual~ f        21    29 p     comp~
+    ##  3 audi         a4         2    2008     4 manual~ f        20    31 p     comp~
+    ##  4 audi         a4         2    2008     4 auto(a~ f        21    30 p     comp~
+    ##  5 audi         a4         2.8  1999     6 auto(l~ f        16    26 p     comp~
+    ##  6 audi         a4         2.8  1999     6 manual~ f        18    26 p     comp~
+    ##  7 audi         a4         3.1  2008     6 auto(a~ f        18    27 p     comp~
+    ##  8 audi         a4 quat~   1.8  1999     4 manual~ 4        18    26 p     comp~
+    ##  9 audi         a4 quat~   1.8  1999     4 auto(l~ 4        16    25 p     comp~
+    ## 10 audi         a4 quat~   2    2008     4 manual~ 4        20    28 p     comp~
+    ## # ... with 224 more rows
+
+``` r
+?mpg
+
+glimpse(mpg)
+```
+
+    ## Rows: 234
+    ## Columns: 11
+    ## $ manufacturer <chr> "audi", "audi", "audi", "audi", "audi", "audi", "audi"...
+    ## $ model        <chr> "a4", "a4", "a4", "a4", "a4", "a4", "a4", "a4 quattro"...
+    ## $ displ        <dbl> 1.8, 1.8, 2.0, 2.0, 2.8, 2.8, 3.1, 1.8, 1.8, 2.0, 2.0,...
+    ## $ year         <int> 1999, 1999, 2008, 2008, 1999, 1999, 2008, 1999, 1999, ...
+    ## $ cyl          <int> 4, 4, 4, 4, 6, 6, 6, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 8, ...
+    ## $ trans        <chr> "auto(l5)", "manual(m5)", "manual(m6)", "auto(av)", "a...
+    ## $ drv          <chr> "f", "f", "f", "f", "f", "f", "f", "4", "4", "4", "4",...
+    ## $ cty          <int> 18, 21, 20, 21, 16, 18, 18, 18, 16, 20, 19, 15, 17, 17...
+    ## $ hwy          <int> 29, 29, 31, 30, 26, 26, 27, 26, 25, 28, 27, 25, 25, 25...
+    ## $ fl           <chr> "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p",...
+    ## $ class        <chr> "compact", "compact", "compact", "compact", "compact",...
+
+In the printed data frame, angled brackets at the top of each column
+provide type of each variable.
+
+Those with `<chr>` above their columns are categorical, while those with
+`<dbl>` or `<int>` are continuous.
+
+The following list contains the categorical variables in `mpg`:
+
+  - manufacturer
+  - model
+  - trans
+  - drv
+  - fl
+  - class\*
+
+The following list contains the continuous variables in `mpg`:
+
+  - displ
+  - year
+  - cyl
+  - cty
+  - hwy
+
+`glimpse()` is another function that concisely displays the type of each
+column in the data frame:
+
+This gives more visibility in identifying the variable types.
+
+For those lists, I considered any variable that was non-numeric was
+considered categorical and any variable that was numeric was considered
+continuous. This largely corresponds to the heuristics ggplot() uses for
+will interpreting variables as discrete or continuous.
+
+### Exercise 3.3.3
+
+`Map a continuous variable to color, size, and shape. How do these
+aesthetics behave differently for categorical vs. continuous variables?`
+
+The variable `hwy`, highway miles per gallon, is a continuous variable
+
+``` r
+ggplot(mpg, aes(x = displ, y = hwy, colour = hwy)) +
+  geom_point()
+```
+
+![](report_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+
+``` r
+ggplot(mpg, aes(x = displ, y = hwy, size = hwy)) +
+  geom_point()
+```
+
+![](report_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+
+    ggplot(mpg, aes(x = displ, y = hwy, shape = hwy)) +
+      geom_point()
+    #> Error: A continuous variable can not be mapped to shape
+
+When a continuous value is mapped to shape, it gives an error. Though we
+could split a continuous variable into discrete categories and use a
+shape aesthetic, this would conceptually not make sense. A numeric
+variable has an order, but shapes do not. It is clear that smaller
+points correspond to smaller values, or once the color scale is given,
+which colors correspond to larger or smaller values. But it is not clear
+whether a square is greater or less than a circle.
+
+``` r
+ggplot(mpg, aes(x = displ, y = hwy, shape = class)) +
+  geom_point()
+```
+
+    ## Warning: The shape palette can deal with a maximum of 6 discrete values because
+    ## more than 6 becomes difficult to discriminate; you have 7. Consider
+    ## specifying shapes manually if you must have them.
+
+    ## Warning: Removed 62 rows containing missing values (geom_point).
+
+![](report_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
+
+### Exercise 3.3.4
+
+`What happens if you map the same variable to multiple aesthetics?`
+
+``` r
+ggplot(mpg, aes(x = displ, y = hwy, colour = hwy, size = displ)) +
+  geom_point()
+```
+
+![](report_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+
+In the above plot, hwy is mapped to both location on the y-axis and
+color, and displ is mapped to both location on the x-axis and size. The
+code works and produces a plot, even if it is a bad one. Mapping a
+single variable to multiple aesthetics is redundant. Because it is
+redundant information, in most cases avoid mapping a single variable to
+multiple aesthetics.
+
+### Exercise 3.3.5
+
+`What does the stroke aesthetic do? What shapes does it work with?
+(Hint: use ?geom_point)`
+
+Stroke changes the size of the border for shapes (21-25). These are
+filled shapes in which the color and size of the border can differ from
+that of the filled interior of the shape.
+
+``` r
+ggplot(mtcars, aes(wt, mpg)) +
+  geom_point(shape = 21, colour = "blue", fill = "red", size = 5, stroke = 5)
+```
+
+![](report_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+
+``` r
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(shape = 23, colour = "blue", fill = "red", size = 5, stroke = 2)
+```
+
+![](report_files/figure-gfm/unnamed-chunk-23-2.png)<!-- -->
+
+![R-Shape](Shape.PNG)
+
+### Exercise 3.3.6
+
+`What happens if you map an aesthetic to something other than a variable
+name, like aes(colour = displ < 5)? Note, you’ll also need to specify x
+and y.`
+
+``` r
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), color = "blue")
+```
+
+![](report_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
+
+``` r
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, colour = displ))
+```
+
+![](report_files/figure-gfm/unnamed-chunk-24-2.png)<!-- -->
+
+``` r
+ggplot(mpg, aes(x = displ, y = hwy, colour = displ < 5)) +
+  geom_point()
+```
+
+![](report_files/figure-gfm/unnamed-chunk-24-3.png)<!-- -->
+
+Aesthetics can also be mapped to expressions like displ \< 5. The
+ggplot() function behaves as if a temporary variable was added to the
+data with values equal to the result of the expression. In this case,
+the result of displ \< 5 is a logical variable which takes values of
+TRUE or FALSE.
 
 ### References:
 
